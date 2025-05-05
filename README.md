@@ -1,4 +1,4 @@
-![Screenshot 2025-05-05 202615](https://github.com/user-attachments/assets/dc427152-bd16-4f31-a57e-cc353410fb32)
+
 # Inventory Management Web Application
 
 This is a Flask-based Inventory Management Web Application that uses PostgreSQL for backend data storage. It allows users to manage products, warehouse locations, product movements, and view inventory details in a user-friendly interface.
@@ -110,6 +110,17 @@ Folder Structure
       │   └── location_inventory.html
       ├── app.py
       └── README.md
+
+SCREENSHOTS:
+
 ![Screenshot 2025-05-05 202602](https://github.com/user-attachments/assets/2b20852f-367e-4e52-9262-f8dd6348ec70)
+![Screenshot 2025-05-05 202615](https://github.com/user-attachments/assets/dc427152-bd16-4f31-a57e-cc353410fb32)
+![Screenshot 2025-05-05 202626](https://github.com/user-attachments/assets/35314eb4-9c2c-40e7-bbab-4fb6c1270732)
+![Screenshot 2025-05-05 202634](https://github.com/user-attachments/assets/48c71738-b322-472b-a773-bd8cda663c64)
+![Screenshot 2025-05-05 202646](https://github.com/user-attachments/assets/a171714e-affc-41e5-8ebb-3ad818770262)
+![Screenshot 2025-05-05 202729](https://github.com/user-attachments/assets/7ce861ff-a5b9-4960-9963-2f029ebe3b5e)
+
+SCREEN RECORDING:
+
 
 
