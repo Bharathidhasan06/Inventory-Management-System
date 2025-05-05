@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Record Product Movement</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; 
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 style="font-size: 26px; margin-bottom: 20px;">Record Product Movement</h2>
+
+        {% if error_message %}
+            <div style="color: red; font-weight: bold; margin-bottom: 20px;">
+                {{ error_message }}
+            </div>
+        {% endif %}
+
+        <form method="post" style="font-size: 18px;">
+            <div style="margin-bottom: 15px;">
+                <label>Product ID:</label>
+                <select name="product_id" required style="font-size: 16px; padding: 5px;">
+                    <option value="">-- Select From Products --</option>
+                    {% for p in products %}
+                    <option value="{{ p[0] }}">{{ p[0] }} - {{ p[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label>From Location (Location ID) (optional):</label>
+                <select name="from_location" style="font-size: 16px; padding: 5px;">
+                    <option value="">-- Select From Location --</option>
+                    {% for l in locations %}
+                    <option value="{{ l[0] }}">{{ l[0] }} - {{ l[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label>To Location (Location ID) (optional):</label>
+                <select name="to_location" style="font-size: 16px; padding: 5px;">
+                    <option value="">-- Select To Location --</option>
+                    {% for l in locations %}
+                    <option value="{{ l[0] }}">{{ l[0] }} - {{ l[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label>Quantity:</label>
+                <input type="number" name="qty" required style="font-size: 16px; padding: 5px;">
+            </div>
+
+            <div style="margin-top: 20px;">
+                <button type="submit" style="font-size: 16px; padding: 8px 16px;">Submit</button>
+            </div>
+        </form>
+    </form>
+
+</form>
+
+<div style="margin-top: 30px; display: flex; gap: 10px;">
+    <a href="/register" style="text-decoration: none; background-color:  #007bff; color: white; padding: 8px 16px; border-radius: 4px; font-size: 16px;">Add Products</a>
+    <a href="/check_inventory" style="text-decoration: none; background-color:  #007bff; color: white; padding: 8px 16px; border-radius: 4px; font-size: 16px;">Stock Report at Warehouse</a>
+</div>
+
+
+        
+    </div>
+    
+</body>
+</html>
