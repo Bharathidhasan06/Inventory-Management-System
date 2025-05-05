@@ -1,37 +1,48 @@
+# Inventory Management System
 
-# Inventory Management Web Application
-
-This is a Flask-based Inventory Management Web Application that uses PostgreSQL for backend data storage. It allows users to manage products, warehouse locations, product movements, and view inventory details in a user-friendly interface.
-
----
-
-## Features
-
-- **Register Products and Locations**: Add new products and warehouse locations with validation for consistency in IDs and names.
-- **Record Product Quantities**: Insert products into specific locations with quantity.
-- **Edit Products**: Update product names, locations, and quantities.
-- **Delete Entries**: Remove a specific product-location pair from inventory.
-- **View Inventory**: Display all current product-location-quantity entries.
-- **Product Movement**: Move products between locations while maintaining quantity balances.
-- **Inventory by Location**: View all products and their quantities in a specific location.
-- **Validation**: Checks for mismatches in product and location IDs/names to prevent data conflicts.
+This is a **Flask-based Inventory Management Web Application** that uses **PostgreSQL** for backend data storage. It allows users to manage products, warehouse locations, product movements, and view inventory details through a user-friendly interface.
 
 ---
 
-## Technologies Used
+## 🚀 Features
 
-- **Backend**: Python 3, Flask
-- **Database**: PostgreSQL
-- **Frontend**: HTML, Bootstrap (assumed based on `render_template` usage)
+- **Register Products and Locations**  
+  Add new products and warehouse locations with validation for consistency in IDs and names.
+
+- **Record Product Quantities**  
+  Insert products into specific locations along with quantity.
+
+- **Edit Products**  
+  Update product names, locations, and quantities.
+
+- **Delete Entries**  
+  Remove a specific product-location pair from inventory.
+
+- **View Inventory**  
+  Display all current product-location-quantity entries.
+
+- **Product Movement**  
+  Move products between locations while maintaining quantity balances.
+
+- **Inventory by Location**  
+  View all products and their quantities in a specific location.
+
+- **Validation**  
+  Checks for mismatches in product and location IDs/names to prevent data conflicts.
 
 ---
 
-## Database Schema
+## 🛠 Technologies Used
 
-You will need the following tables:
+- **Backend:** Python 3, Flask  
+- **Database:** PostgreSQL  
+- **Frontend:** HTML (no CSS framework)
 
-## sql
+---
 
+## 🗃️ Database Schema
+
+```sql
 CREATE TABLE Product (
     product_id INT PRIMARY KEY,
     product_name TEXT UNIQUE
@@ -64,6 +75,9 @@ CREATE TABLE ProductMovement (
     to_location INT,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+``` 
+
 
 Setup Instructions
 
@@ -111,7 +125,7 @@ Folder Structure
       ├── app.py
       └── README.md
 
-SCREENSHOTS:
+## SCREENSHOTS:
 
 ![Screenshot 2025-05-05 202602](https://github.com/user-attachments/assets/2b20852f-367e-4e52-9262-f8dd6348ec70)
 ![Screenshot 2025-05-05 202615](https://github.com/user-attachments/assets/dc427152-bd16-4f31-a57e-cc353410fb32)
@@ -120,7 +134,10 @@ SCREENSHOTS:
 ![Screenshot 2025-05-05 202646](https://github.com/user-attachments/assets/a171714e-affc-41e5-8ebb-3ad818770262)
 ![Screenshot 2025-05-05 202729](https://github.com/user-attachments/assets/7ce861ff-a5b9-4960-9963-2f029ebe3b5e)
 
-SCREEN RECORDING:
+## SCREEN RECORDING:
+
+https://drive.google.com/file/d/158azUpTvXDXNm0yXde6huhaZUdvzu4s6/view?usp=drive_link
+
 
 
 
