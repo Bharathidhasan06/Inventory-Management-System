@@ -109,6 +109,6 @@ Folder Structure
       │   └── location_inventory.html
       ├── app.py
       └── README.md
-
+![Screenshot 2025-05-05 202602](https://github.com/user-attachments/assets/2b20852f-367e-4e52-9262-f8dd6348ec70)
 
 
