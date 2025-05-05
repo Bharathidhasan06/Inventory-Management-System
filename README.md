@@ -1,3 +1,4 @@
+![Screenshot 2025-05-05 202615](https://github.com/user-attachments/assets/dc427152-bd16-4f31-a57e-cc353410fb32)
 # Inventory Management Web Application
 
 This is a Flask-based Inventory Management Web Application that uses PostgreSQL for backend data storage. It allows users to manage products, warehouse locations, product movements, and view inventory details in a user-friendly interface.
