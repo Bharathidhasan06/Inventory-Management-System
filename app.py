@@ -11,11 +11,13 @@ def get_connection():
         host="localhost"
     )
 
-@app.route('/')
-@app.route('/register')
-
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def home():
-    return render_template('register.html')
+    if request.method == 'POST':
+        return redirect(url_for('register'))
+    return render_template('login.html')
+
 
 @app.route("/confirm", methods=["POST", "GET"])
 def register():
@@ -25,6 +27,7 @@ def register():
         l = request.form.get("location_id")
         a = request.form.get("location")
         qty = request.form.get("quantity")
+        price=request.form.get("price")
 
         if not i.isdigit() or int(i) <= 0 or not l.isdigit() or int(l) <= 0:
             return render_template("register.html", error_message="Invalid Product ID or Location ID. IDs must be positive integers.")
@@ -64,10 +67,10 @@ def register():
             return render_template("register.html", error_message="Location name already exists with a different ID. Please use a different name or correct the ID.",
                                    product_id=i, product=n, location_id=l, location=a)
 
-        cur.execute("INSERT INTO Product (product_id, product_name) VALUES (%s, %s) ON CONFLICT DO NOTHING", (i, n))
+        cur.execute("INSERT INTO Product (product_id, product_name,price) VALUES (%s, %s,%s) ON CONFLICT DO NOTHING", (i, n,price))
         cur.execute("INSERT INTO Location (location_id, location) VALUES (%s, %s) ON CONFLICT DO NOTHING", (l, a))
 
-        cur.execute("""INSERT INTO Products (product_id, location, quantity) VALUES (%s, %s, %s) ON CONFLICT (product_id, location) DO UPDATE SET quantity = Products.quantity + EXCLUDED.quantity""", (i, a, qty))
+        cur.execute("""INSERT INTO Products (product_id, location, quantity,price) VALUES (%s, %s, %s,%s) ON CONFLICT (product_id, location) DO UPDATE SET quantity = Products.quantity + EXCLUDED.quantity""", (i, a, qty,price))
 
         cur.execute("""INSERT INTO Inventory (product_id, location_id, quantity) VALUES (%s, %s, %s) ON CONFLICT (product_id, location_id) DO UPDATE SET quantity = Inventory.quantity + EXCLUDED.quantity""", (i, l, qty))
 
@@ -77,11 +80,12 @@ def register():
         product_name = cur.fetchone()[0]
         cur.execute("SELECT location FROM Location WHERE location_id = %s", (l,))
         location = cur.fetchone()[0]
-
+        cur.execute("SELECT price FROM products WHERE product_id=%s AND location =%s", (i,a))
+        price=cur.fetchone()[0]
         cur.close()
         conn.close()
 
-        return render_template("confirm.html", product_id=i, product_name=product_name, location_id=l, location=location, quantity=qty)
+        return render_template("confirm.html", product_id=i, product_name=product_name, location_id=l, location=location, quantity=qty,price=price)
 
     return render_template('register.html')
 
@@ -91,7 +95,9 @@ def register():
 def view_products():
     conn = get_connection()
     cur = conn.cursor()
-    cur.execute(""" SELECT p.product_id, pr.product_name, p.location, p.quantity FROM Products p JOIN Product pr ON p.product_id = pr.product_id""")
+    cur.execute(""" 
+    SELECT p.product_id, pr.product_name, p.location, p.quantity, p.price FROM Products p JOIN Product pr ON p.product_id = pr.product_id""")
+
     products = cur.fetchall()
     cur.close()
     conn.close()
@@ -114,23 +120,29 @@ def edit_product(product_id):
     conn = get_connection()
     cur = conn.cursor()
 
-    cur.execute(""" SELECT p.product_id, p.product_name, pl.location_id, pl.location, pr.quantity FROM Products pr JOIN Product p ON pr.product_id = p.product_id JOIN Location pl ON pr.location = pl.location WHERE p.product_id = %s """, (product_id,))
+    cur.execute(""" SELECT p.product_id, p.product_name, pl.location_id, pl.location, pr.quantity,pr.price FROM Products pr JOIN Product p ON pr.product_id = p.product_id JOIN Location pl ON pr.location = pl.location WHERE p.product_id = %s """, (product_id,))
     product = cur.fetchone()
 
     if product:
-        product_id, product_name, location_id, location_name, quantity = product
+        product_id, product_name, location_id, location_name,quantity,price=product
     else:
         return "Product not found."
     if request.method == "POST":
         new_product_name = request.form["product"]
         new_location_name = request.form["location"]
         new_quantity = request.form["quantity"]
-
-        cur.execute(""" UPDATE Product SET product_name = %s WHERE product_id = %s """, (new_product_name, product_id))
+        new_price=request.form["price"]
+        cur.execute(""" UPDATE Product SET product_name = %s , price=%s WHERE product_id = %s """, (new_product_name,new_price, product_id))
 
         cur.execute(""" UPDATE Location SET location = %s WHERE location_id = %s """, (new_location_name, location_id))
 
-        cur.execute(""" UPDATE Products SET quantity = %s WHERE product_id = %s AND location = %s """, (new_quantity, product_id, location_name))
+        cur.execute(""" UPDATE Products SET quantity = %s  , price=%s WHERE product_id = %s AND location = %s """, (new_quantity,new_price, product_id, location_name))
+
+        ##cur.execute(""" UPDATE Products SET  WHERE product_id=%s """,(new_price,product_id))
+
+       
+
+        
 
         conn.commit()
         cur.close()
@@ -161,11 +173,18 @@ def add_movement():
         to_location = request.form['to_location'] or None
         qty = int(request.form['qty'])
 
+
         if qty <= 0:
             error_message = "Please provide a valid quantity."
             cur.close()
             conn.close()
             return render_template('add_movement.html', products=products, locations=locations, error_message=error_message)
+        
+        if qty>10 :
+            error_message="Quantity should be Lesser than or equal to 10"
+            cur.close()
+            conn.close()
+            return render_template('add_movement.html',products=products,locations=locations,error_message=error_message)
 
         if not from_location and not to_location:
             error_message = 'Please select either a "From" or "To" location.'
