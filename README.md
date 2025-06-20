@@ -36,7 +36,7 @@ This is a **Flask-based Inventory Management Web Application** that uses **Postg
 
 - **Backend:** Python 3, Flask  
 - **Database:** PostgreSQL  
-- **Frontend:** HTML (no CSS framework)
+- **Frontend:** HTML, CSS 
 
 ---
 
